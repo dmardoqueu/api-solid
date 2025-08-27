@@ -1,4 +1,4 @@
-import type { User, Prisma } from "@prisma/client";
+import type { Prisma, User } from "@prisma/client";
 import type { UsersRepository } from "../users-repository.js";
 
 export class InMemoryUsersRepository implements UsersRepository {
