@@ -8,19 +8,21 @@ let sut: CheckInUseCase
 let gymsRepository: InMemoryGymsRepository
 let checkInsRepository: InMemoryCheckInsRepository
 
-describe('Authenticate Use Case', () => {
+//-6.84302, -35.49221
+//-6.8245649,-35.4944589
 
+describe('Authenticate Use Case', () => {
     beforeEach(() => {
         checkInsRepository = new InMemoryCheckInsRepository()
         gymsRepository = new InMemoryGymsRepository()
         sut = new CheckInUseCase(checkInsRepository, gymsRepository)
-        
+
         gymsRepository.items.push({
             id: 'gym-01',
             title: 'JavaScript Gym',
             description: '',
-            latitude: new Decimal(0),
-            longitude: new Decimal(0),
+            latitude: new Decimal(-6.8245649),
+            longitude: new Decimal(-35.4944589),
             phone: '',
         })
 
@@ -35,8 +37,8 @@ describe('Authenticate Use Case', () => {
         const { checkIn } = await sut.execute({
             gymId: 'gym-01',
             userId: 'user-01',
-            userLatitude: 0,
-            userLongitude: 0,
+            userLatitude: -6.8245649,
+            userLongitude: -35.4944589,
         })
 
         expect(checkIn.id).toEqual(expect.any(String))
@@ -48,16 +50,16 @@ describe('Authenticate Use Case', () => {
         await sut.execute({
             gymId: 'gym-01',
             userId: 'user-01',
-            userLatitude: 0,
-            userLongitude: 0,
+            userLatitude: -6.8245649,
+            userLongitude: -35.4944589,
         })
 
         await expect(() =>
             sut.execute({
                 gymId: 'gym-01',
                 userId: 'user-01',
-                userLatitude: 0,
-                userLongitude: 0,
+                userLatitude: -6.8245649,
+                userLongitude: -35.4944589,
             })
         ).rejects.toBeInstanceOf(Error)
     })
@@ -68,8 +70,8 @@ describe('Authenticate Use Case', () => {
         await sut.execute({
             gymId: 'gym-01',
             userId: 'user-01',
-            userLatitude: 0,
-            userLongitude: 0,
+            userLatitude: -6.8245649,
+            userLongitude: -35.4944589,
         })
 
         vi.setSystemTime(new Date(2024, 0, 21, 8, 0, 0))
@@ -78,10 +80,29 @@ describe('Authenticate Use Case', () => {
         const { checkIn } = await sut.execute({
             gymId: 'gym-01',
             userId: 'user-01',
-            userLatitude: 0,
-            userLongitude: 0,
+            userLatitude: -6.8245649,
+            userLongitude: -35.4944589,
         })
 
         expect(checkIn.id).toEqual(expect.any(String))
+    })
+
+    it('should not be able to check in on distanct gym', async () => {
+        gymsRepository.items.push({
+            id: 'gym-02',
+            title: 'JavaScript Gym',
+            description: '',
+            latitude: new Decimal(-6.6904148),
+            longitude: new Decimal(-35.2494476),
+            phone: '',
+        })
+
+        await expect(() => sut.execute({
+            gymId: 'gym-02',
+            userId: 'user-01',
+            userLatitude: -6.8245649,
+            userLongitude: -35.4944589,
+        })
+        ).rejects.toBeInstanceOf(Error)
     })
 })
