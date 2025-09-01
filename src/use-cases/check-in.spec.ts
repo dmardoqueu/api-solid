@@ -13,7 +13,7 @@ let checkInsRepository: InMemoryCheckInsRepository
 //-6.84302, -35.49221
 //-6.8245649,-35.4944589
 
-describe('Authenticate Use Case', () => {
+describe('Check-in Use Case', () => {
     beforeEach(async () => {
         checkInsRepository = new InMemoryCheckInsRepository()
         gymsRepository = new InMemoryGymsRepository()
