@@ -1,6 +1,6 @@
 import { expect, describe, it, beforeEach } from "vitest"
 import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository.js"
-import { AuthenticateUseCase } from "./authenticate-controller.js"
+import { AuthenticateUseCase } from "./authenticate.js"
 import { hash } from "bcryptjs"
 
 let sut: AuthenticateUseCase
