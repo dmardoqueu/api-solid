@@ -10,9 +10,6 @@ let sut: CheckInUseCase
 let gymsRepository: InMemoryGymsRepository
 let checkInsRepository: InMemoryCheckInsRepository
 
-//-6.84302, -35.49221
-//-6.8245649,-35.4944589
-
 describe('Check-in Use Case', () => {
     beforeEach(async () => {
         checkInsRepository = new InMemoryCheckInsRepository()
@@ -77,7 +74,6 @@ describe('Check-in Use Case', () => {
         })
 
         vi.setSystemTime(new Date(2024, 0, 21, 8, 0, 0))
-
 
         const { checkIn } = await sut.execute({
             gymId: 'gym-01',

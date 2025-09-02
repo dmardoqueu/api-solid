@@ -1,13 +1,9 @@
 import { expect, describe, it, beforeEach } from "vitest"
-import { FecthUserCheckInsHistoryUseCase } from "./fetch-user-check-ins-history.js"
 import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository.js"
 import { SearchGymsUseCase } from "./search-gyms.js"
 
 let gymsRepository: InMemoryGymsRepository
 let sut: SearchGymsUseCase
-
-//-6.84302, -35.49221
-//-6.8245649,-35.4944589
 
 describe('Search Gyms Use Case', () => {
     beforeEach(async () => {
@@ -15,7 +11,7 @@ describe('Search Gyms Use Case', () => {
         sut = new SearchGymsUseCase(gymsRepository)
     })
 
-    it('should be able to search for gymas', async () => {
+    it('should be able to search for gyms', async () => {
         await gymsRepository.create({
             title: 'JavaScript Gym',
             description: '',
