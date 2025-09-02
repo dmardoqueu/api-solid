@@ -1,4 +1,4 @@
-import type { CheckIn, User } from "@prisma/client"
+import type { CheckIn } from "@prisma/client"
 import type { CheckInsRepository } from "@/repositories/check-ins-repository.js"
 
 interface FecthUserCheckInsHistoryUseCaseRequest {
