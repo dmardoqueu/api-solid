@@ -1,14 +1,24 @@
-import fastify from 'fastify';
+import fastify, { type FastifyReply, type FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { prisma } from './lib/prisma.js';
-import { register } from './http/controllers/register-controller.js';
 import { appRoutes } from './http/routes.js';
+import fastifyJwt from '@fastify/jwt';
 import { env } from './env/index.js';
 
 export const app = fastify()
 
-app.register(appRoutes)
+app.register(fastifyJwt, {
+    secret: env.JWT_SECRET,
+})
 
+app.decorate('authenticate', async function(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        await request.jwtVerify()
+    } catch (err) {
+        reply.send(err)
+    }
+})
+
+app.register(appRoutes)
 
 app.setErrorHandler((error, _, reply) => {
     if (error instanceof z.ZodError) {
