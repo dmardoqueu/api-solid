@@ -1,8 +1,9 @@
 import fastify, { type FastifyReply, type FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { appRoutes } from './http/routes.js';
 import fastifyJwt from '@fastify/jwt';
 import { env } from './env/index.js';
+import { usersRoutes } from './http/controllers/users/routes.js';
+import { gymsRoutes } from './http/controllers/gyms/routes.js';
 
 export const app = fastify()
 
@@ -18,7 +19,8 @@ app.decorate('authenticate', async function(request: FastifyRequest, reply: Fast
     }
 })
 
-app.register(appRoutes)
+app.register(usersRoutes)
+app.register(gymsRoutes)
 
 app.setErrorHandler((error, _, reply) => {
     if (error instanceof z.ZodError) {
