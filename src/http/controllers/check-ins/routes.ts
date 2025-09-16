@@ -1,0 +1,17 @@
+import type { FastifyInstance } from 'fastify'
+
+import { verifyJwt } from '../../middlewares/verify-jwt.js'
+import { validate } from './validate-controller.js'
+import { metrics } from './metrics-controller.js'
+import { history } from './history-controller.js'
+import { create } from './create-controller.js'
+
+export async function checkInsRoutes(app: FastifyInstance) {
+    app.addHook('onRequest', verifyJwt)
+
+    app.get('/check-ins/history', history)
+    app.get('/check-ins/metrics', metrics)
+
+    app.post('/gyms/:gymId/check-ins', create)
+    app.patch('/check-ins/:checkInId/validate', validate)
+}

@@ -1,15 +1,26 @@
 import fastify, { type FastifyReply, type FastifyRequest } from 'fastify';
-import { z } from 'zod';
+import { check, z } from 'zod';
 import fastifyJwt from '@fastify/jwt';
 import { env } from './env/index.js';
 import { usersRoutes } from './http/controllers/users/routes.js';
 import { gymsRoutes } from './http/controllers/gyms/routes.js';
+import { checkInsRoutes } from './http/controllers/check-ins/routes.js';
+import fastifyCookie from '@fastify/cookie';
 
 export const app = fastify()
 
 app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
+    sign: {
+        expiresIn: '10m',
+    },
+    cookie: {
+        cookieName: 'refreshToken',
+        signed: false,
+    },
 })
+
+app.register(fastifyCookie)
 
 app.decorate('authenticate', async function(request: FastifyRequest, reply: FastifyReply) {
     try {
@@ -21,6 +32,7 @@ app.decorate('authenticate', async function(request: FastifyRequest, reply: Fast
 
 app.register(usersRoutes)
 app.register(gymsRoutes)
+app.register(checkInsRoutes)
 
 app.setErrorHandler((error, _, reply) => {
     if (error instanceof z.ZodError) {
